@@ -1,1 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+  --primary-custom: #bb86fc;
+}
+
+body {
+  background-color: #121212;
+  color: #e0e0e0;
+  font-family: 'Inter', sans-serif; 
+}
+
+.text-secundary {
+  color: rgb(200, 200, 200) !important;
+}
+
+.text-primary-custom {
+  color: var(--primary-custom) !important;
+}
+
+.btn-primary-custom {
+  background-color: var(--primary-custom);
+  color: #000;
+  font-weight: bold;
+  border: none;
+}
+
+.btn-primary-custom:hover {
+  background-color: #9965f4;
+  color: #000;
+}

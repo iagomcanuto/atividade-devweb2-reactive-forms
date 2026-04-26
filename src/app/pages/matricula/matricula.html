@@ -1,0 +1,125 @@
+<div class="card shadow border-0 mx-auto" style="max-width: 650px;">
+  <div class="card-header bg-dark border-bottom border-secondary py-3 text-center">
+    <h4 class="text-white mb-0">Ficha de Matrícula - IFES</h4>
+  </div>
+  
+  <div class="card-body p-4">
+    <form [formGroup]="formMatricula" (ngSubmit)="aoEnviar()">
+      
+      <div class="mb-3">
+        <label class="form-label text-secondary">Nome Completo *</label>
+        <input type="text" formControlName="nome" class="form-control" placeholder="Mínimo 3 caracteres">
+        <div *ngIf="obterMensagemErro('nome') as erro" class="text-danger small mt-1">
+          {{ erro }}
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-secondary">E-mail *</label>
+        <input type="email" formControlName="email" class="form-control" placeholder="exemplo@ifes.edu.br">
+        <div *ngIf="obterMensagemErro('email') as erro" class="text-danger small mt-1">
+          {{ erro }}
+        </div>
+      </div>
+
+      <div class="mb-3" formArrayName="telefones">
+        <label class="form-label text-secondary">Telefones * (Pelo menos um obrigatório) </label>
+        <div *ngFor="let tel of listaTelefones.controls; let i = index" class="mb-2">
+          <div class="input-group">
+            <input [formControlName]="i" class="form-control" placeholder="Número do telefone">
+            <button type="button" class="btn btn-outline-danger" (click)="removerTelefone(i)" *ngIf="listaTelefones.length > 1">
+              <i class="bi bi-trash"></i>
+            </button>
+          </div>
+          <div *ngIf="tel.invalid && (tel.touched || tel.dirty)" class="text-danger small mt-1">
+            O telefone é obrigatório.
+          </div>
+        </div>
+        <button type="button" class="btn btn-sm btn-outline-primary-custom" (click)="adicionarTelefone()">
+          <i class="bi bi-plus-lg me-1"></i> Adicionar outro telefone
+        </button>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-secondary">Idade *</label>
+          <input type="number" formControlName="idade" class="form-control">
+          <div *ngIf="obterMensagemErro('idade') as erro" class="text-danger small mt-1">
+            {{ erro }}
+          </div>
+        </div>
+
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-secondary">Gênero *</label>
+          <select formControlName="genero" class="form-select">
+            <option value="">Selecione...</option>
+            <option value="Masculino">Masculino</option>
+            <option value="Feminino">Feminino</option>
+            <option value="Outro">Outro</option>
+          </select>
+          <div *ngIf="obterMensagemErro('genero') as erro" class="text-danger small mt-1">
+            O gênero é obrigatório.
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-secondary">Senha *</label>
+          <input type="password" formControlName="senha" class="form-control" placeholder="Mínimo 6 caracteres">
+          <div *ngIf="obterMensagemErro('senha') as erro" class="text-danger small mt-1">
+            {{ erro }}
+          </div>
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label text-secondary">Confirmar Senha *</label>
+          <input type="password" formControlName="confirmarSenha" class="form-control">
+        </div>
+        <div *ngIf="isSenhasDiferentes()" class="text-danger small mb-3 px-2">
+          As senhas não coincidem.
+        </div>
+      </div>
+
+      <div class="mb-3">
+        <label class="form-label text-secondary">Cidade *</label>
+        <select formControlName="cidade" class="form-select">
+          <option value="">Selecione sua cidade...</option>
+          <option value="Colatina">Colatina</option>
+          <option value="Marilândia">Marilândia</option>
+          <option value="Linhares">Linhares</option>
+          <option value="Vitória">Vitória</option>
+          <option value="Serra">Serra</option>
+          <option value="Outra">Outra</option>
+        </select>
+        <div *ngIf="obterMensagemErro('cidade') as erro" class="text-danger small mt-1">
+          A seleção da cidade é obrigatória.
+        </div>
+      </div>
+
+      <div class="form-check mb-4">
+        <input type="checkbox" formControlName="termos" class="form-check-input" id="checkTermos">
+        <label class="form-check-label text-secondary" for="checkTermos">Aceito os termos de matrícula *</label>
+        <div *ngIf="obterMensagemErro('termos') as erro" class="text-danger small mt-1">
+          O aceite dos termos é obrigatório.
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary-custom w-100 btn-lg shadow" [disabled]="formMatricula.invalid">
+        Cadastrar Aluno
+      </button>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="exibirResumo" class="card mt-4 bg-dark border-primary-custom text-white mx-auto shadow" style="max-width: 650px;">
+  <div class="card-header text-primary-custom fw-bold">
+    <i class="bi bi-check-all me-2"></i>Resumo do Cadastro Realizado
+  </div>
+  <div class="card-body">
+    <p><strong>Nome:</strong> {{ formMatricula.value.nome }}</p>
+    <p><strong>E-mail:</strong> {{ formMatricula.value.email }}</p>
+    <p><strong>Telefones:</strong> {{ formMatricula.value.telefones.join(', ') }}</p>
+    <p><strong>Idade:</strong> {{ formMatricula.value.idade }}</p>
+    <p><strong>Cidade:</strong> {{ formMatricula.value.cidade }}</p>
+  </div>
+</div>
